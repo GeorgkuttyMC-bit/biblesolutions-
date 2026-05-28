@@ -20,7 +20,9 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
         body: JSON.stringify({ issue, language })
       });
       const data = await res.json();
-      if (data.solution) {
+      if (!res.ok) {
+        setSolution(`Error: ${data.error || res.statusText}. Please check the server logs or verify your Gemini API key.`);
+      } else if (data.solution) {
         setSolution(data.solution);
         if (ttsEnabled) {
           playAudio(data.solution, language);

@@ -20,7 +20,9 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
         body: JSON.stringify({ verse, language })
       });
       const data = await res.json();
-      if (data.story) {
+      if (!res.ok) {
+        setStory(`Error: ${data.error || res.statusText}. Please check the server logs or verify your Gemini API key.`);
+      } else if (data.story) {
         setStory(data.story);
         if (ttsEnabled) {
           playAudio(data.story, language);
