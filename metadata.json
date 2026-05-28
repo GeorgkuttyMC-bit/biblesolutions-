@@ -1,0 +1,6 @@
+{
+  "name": "Christian Journey & Guidance",
+  "description": "An interactive, multilingual Christian platform featuring a Story Bible, AI-powered Issue Solver, and History Timeline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
