@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import Markdown from 'react-markdown';
-import { Loader2, PlayCircle, Heart, MessageSquare, Anchor, Sunrise } from 'lucide-react';
+import { Loader2, PlayCircle, Heart, MessageSquare, Anchor, Sunrise, Square } from 'lucide-react';
+import { translations } from '../translations';
 
 export function BiblicalSolutions({ language, ttsEnabled }: { language: string, ttsEnabled: boolean }) {
   const [issue, setIssue] = useState('');
   const [solution, setSolution] = useState('');
   const [loading, setLoading] = useState(false);
+  const t = translations[language].solutions;
 
   const getSolution = async () => {
     if (!issue.trim()) return;
@@ -48,8 +50,8 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
             <Heart className="w-12 h-12" />
           </div>
           <div className="flex-1 w-full text-center md:text-left">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">Biblical Guidance & Solutions</h2>
-            <p className="text-rose-200 text-lg">Share your burden, and let the timeless wisdom of scripture offer comfort.</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">{t.title}</h2>
+            <p className="text-rose-200 text-lg">{t.subtitle}</p>
           </div>
         </div>
         <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500 rounded-full mix-blend-overlay filter blur-3xl opacity-50 transform translate-x-1/2 -translate-y-1/2"></div>
@@ -60,22 +62,22 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
         <div className="bg-white border text-center md:text-left border-rose-100 p-6 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
           <div className="bg-rose-50 p-3 rounded-full text-rose-600"><MessageSquare className="w-6 h-6" /></div>
           <div>
-            <p className="font-bold text-slate-800 text-base mb-1">1. Share Openly</p>
-            <p className="text-sm text-slate-500">Type out what you are struggling with—anxiety, grief, doubt, or seeking direction.</p>
+            <p className="font-bold text-slate-800 text-base mb-1">{t.steps[0].title}</p>
+            <p className="text-sm text-slate-500">{t.steps[0].desc}</p>
           </div>
         </div>
         <div className="bg-white border text-center md:text-left border-rose-100 p-6 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
           <div className="bg-rose-50 p-3 rounded-full text-rose-600"><Anchor className="w-6 h-6" /></div>
           <div>
-            <p className="font-bold text-slate-800 text-base mb-1">2. Seek Anchor</p>
-            <p className="text-sm text-slate-500">Our compassionate AI matches your feelings with specific, uplifting bible verses.</p>
+            <p className="font-bold text-slate-800 text-base mb-1">{t.steps[1].title}</p>
+            <p className="text-sm text-slate-500">{t.steps[1].desc}</p>
           </div>
         </div>
         <div className="bg-white border text-center md:text-left border-rose-100 p-6 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
           <div className="bg-rose-50 p-3 rounded-full text-rose-600"><Sunrise className="w-6 h-6" /></div>
           <div>
-            <p className="font-bold text-slate-800 text-base mb-1">3. Find Peace</p>
-            <p className="text-sm text-slate-500">Listen to the practical advice and let the scripture renew your mind and spirit.</p>
+            <p className="font-bold text-slate-800 text-base mb-1">{t.steps[2].title}</p>
+            <p className="text-sm text-slate-500">{t.steps[2].desc}</p>
           </div>
         </div>
       </div>
@@ -84,7 +86,7 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
         <textarea 
           value={issue}
           onChange={e => setIssue(e.target.value)}
-          placeholder="I have been feeling overwhelmed lately with my job and balancing my family..."
+          placeholder={t.placeholder}
           className="w-full min-h-[160px] px-6 py-5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-rose-500 text-lg resize-none transition-all leading-relaxed"
         />
         <div className="flex justify-end">
@@ -93,7 +95,7 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
             disabled={loading || !issue.trim()}
             className="px-10 py-4 bg-gradient-to-r from-rose-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:from-rose-700 hover:to-pink-700 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 flex items-center gap-2"
           >
-            {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Seek Guidance'}
+            {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : t.button}
           </button>
         </div>
       </div>
@@ -102,16 +104,26 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
         <div className="bg-white border-2 border-rose-100 rounded-3xl p-8 sm:p-12 shadow-xl prose prose-lg prose-rose max-w-none relative overflow-hidden">
           <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-rose-400 to-rose-600"></div>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-6 border-b border-slate-100 gap-4">
-            <h3 className="text-3xl font-bold font-serif text-slate-900 m-0">Words of Comfort</h3>
+            <h3 className="text-3xl font-bold font-serif text-slate-900 m-0">{t.comfort}</h3>
             {ttsEnabled && (
-              <button 
-                onClick={() => playAudio(solution, language)}
-                className="px-4 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 hover:text-rose-800 rounded-xl flex items-center gap-2 transition font-medium"
-                title="Re-play Audio"
-              >
-                <PlayCircle className="w-5 h-5" />
-                Listen to Guidance
-              </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => playAudio(solution, language)}
+                  className="px-4 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 hover:text-rose-800 rounded-xl flex items-center gap-2 transition font-medium"
+                  title="Playback Guidance"
+                >
+                  <PlayCircle className="w-5 h-5" />
+                  {t.listen}
+                </button>
+                <button 
+                  onClick={() => window.speechSynthesis.cancel()}
+                  className="px-4 py-2 bg-slate-50 text-slate-700 hover:bg-slate-200 hover:text-slate-800 rounded-xl flex items-center gap-2 transition font-medium"
+                  title="Stop Audio"
+                >
+                  <Square className="w-5 h-5 fill-current" />
+                  {t.stop}
+                </button>
+              </div>
             )}
           </div>
           <div className="markdown-body leading-relaxed text-slate-700 text-lg space-y-4">

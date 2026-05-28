@@ -1,39 +1,26 @@
 import { Link } from 'react-router-dom';
 import { BookOpen, Heart, History, ArrowRight, Sparkles, MessageCircle, Navigation, PlayCircle } from 'lucide-react';
 import { motion } from 'motion/react';
+import { translations } from '../translations';
 
 export function HomeDashboard({ language }: { language: string }) {
-  const getGreeting = () => {
-    switch(language) {
-      case 'German': return `Spirituelle Reise`;
-      case 'Malayalam': return `ആത്മീയ യാത്ര`;
-      default: return `Spiritual Journey`;
-    }
-  };
-
-  const getSubTitle = () => {
-    switch(language) {
-      case 'German': return 'Entdecken Sie die Schrift durch Geschichten, finden Sie biblische Führung und erkunden Sie die Geschichte des Glaubens.';
-      case 'Malayalam': return 'കഥകളിലൂടെ തിരുവെഴുത്തുകൾ കണ്ടെത്തുക, മാർഗ്ഗനിർദ്ദേശം കണ്ടെത്തുക, വിശ്വാസത്തിന്റെ ചരിത്രം പര്യവേക്ഷണം ചെയ്യുക.';
-      default: return 'Discover scripture through stories, find biblical guidance, and explore the history of faith.';
-    }
-  };
+  const t = translations[language].home;
 
   return (
     <div className="flex flex-col items-center max-w-5xl mx-auto py-12">
       <div className="text-center mb-16 space-y-6 max-w-3xl">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 font-medium text-sm mb-4">
           <Sparkles className="w-4 h-4" />
-          <span>Interactive Faith Platform</span>
+          <span>{t.badge}</span>
         </div>
         <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
-          Welcome to Your <br/>
+          {t.welcome} <br/>
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-            {getGreeting()}
+            {t.title}
           </span>
         </h1>
         <p className="text-xl text-slate-500 leading-relaxed">
-          {getSubTitle()}
+          {t.subtitle}
         </p>
       </div>
 
@@ -41,26 +28,32 @@ export function HomeDashboard({ language }: { language: string }) {
         <HeroCard
           to="/bible"
           icon={<BookOpen className="w-8 h-8 text-indigo-100" />}
-          title="Story Bible"
-          desc="Enter any verse and receive an engaging, narrated story explaining its context and moral."
+          title={t.cards.bible.title}
+          desc={t.cards.bible.desc}
           bg="bg-gradient-to-br from-indigo-500 to-blue-600"
-          steps={['Enter a Bible verse', 'Generate the story', 'Listen to the narration']}
+          steps={t.cards.bible.steps}
+          action={t.cards.bible.action}
+          howToUse={t.cards.bible.howToUse}
         />
         <HeroCard
           to="/solutions"
           icon={<Heart className="w-8 h-8 text-rose-100" />}
-          title="Biblical Solutions"
-          desc="Share your current personal struggles to receive empathetic, scriptural guidance."
+          title={t.cards.solutions.title}
+          desc={t.cards.solutions.desc}
           bg="bg-gradient-to-br from-rose-500 to-pink-600"
-          steps={['Type out your burden', 'Seek AI-guided wisdom', 'Reflect on scriptures']}
+          steps={t.cards.solutions.steps}
+          action={t.cards.solutions.action}
+          howToUse={t.cards.solutions.howToUse}
         />
         <HeroCard
           to="/journey"
           icon={<History className="w-8 h-8 text-amber-100" />}
-          title="Journey of Faith"
-          desc="Scroll through an interactive, narrated timeline of Christian history from 33 AD to modern times."
+          title={t.cards.journey.title}
+          desc={t.cards.journey.desc}
           bg="bg-gradient-to-br from-amber-500 to-orange-500"
-          steps={['Scroll the timeline', 'Click historical eras', 'Hear the events unfold']}
+          steps={t.cards.journey.steps}
+          action={t.cards.journey.action}
+          howToUse={t.cards.journey.howToUse}
         />
       </div>
       
@@ -71,8 +64,8 @@ export function HomeDashboard({ language }: { language: string }) {
              <Navigation className="w-8 h-8 text-blue-400" />
            </div>
            <div>
-             <h3 className="text-2xl font-bold text-white">How to Get Started</h3>
-             <p className="text-slate-400">Select your preferred language at the top right of the navigation bar. Your selection will instantly translate the interface and adjust the voiceover language for stories and historical readings.</p>
+             <h3 className="text-2xl font-bold text-white">{t.guideTitle}</h3>
+             <p className="text-slate-400">{t.guideDesc}</p>
            </div>
         </div>
       </div>
@@ -80,7 +73,7 @@ export function HomeDashboard({ language }: { language: string }) {
   );
 }
 
-function HeroCard({ to, icon, title, desc, bg, steps }: any) {
+function HeroCard({ to, icon, title, desc, bg, steps, action, howToUse }: any) {
   return (
     <Link to={to} className="group relative bg-white border border-slate-200 rounded-3xl p-1 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-2 overflow-hidden">
       <div className="p-8 pb-6 bg-white rounded-[22px] flex flex-col h-full z-10 relative">
@@ -92,7 +85,7 @@ function HeroCard({ to, icon, title, desc, bg, steps }: any) {
         
         {/* Instructions Module inside Card */}
         <div className="bg-slate-50 p-4 rounded-xl mb-6 flex-1">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">How to use</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{howToUse}</p>
           <ul className="space-y-2">
             {steps.map((step: string, i: number) => (
               <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
@@ -104,7 +97,7 @@ function HeroCard({ to, icon, title, desc, bg, steps }: any) {
         </div>
 
         <div className="flex items-center text-blue-600 font-semibold mt-auto group-hover:translate-x-2 transition-transform">
-          <span className="border-b-2 border-transparent group-hover:border-blue-600 transition-colors">Start Experience</span>
+          <span className="border-b-2 border-transparent group-hover:border-blue-600 transition-colors">{action}</span>
           <ArrowRight className="w-5 h-5 ml-2" />
         </div>
       </div>

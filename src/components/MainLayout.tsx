@@ -1,12 +1,14 @@
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Home, BookOpen, Heart, History, Volume2, VolumeX, ShieldUser, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
+import { translations } from '../translations';
 
 export function MainLayout({ children, language, setLanguage, ttsEnabled, toggleTts }: any) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const isLinkActive = (path: string) => location.pathname === path;
+  const t = translations[language];
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900">
@@ -18,15 +20,15 @@ export function MainLayout({ children, language, setLanguage, ttsEnabled, toggle
               <div className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-1.5 rounded-lg shadow-sm">
                 <BookOpen className="w-4 h-4" />
               </div>
-              <span className="hidden sm:inline bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600 font-bold tracking-tight">Christian Journey</span>
+              <span className="hidden sm:inline bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600 font-bold tracking-tight">{t.nav.title}</span>
             </Link>
           </div>
           
           <nav className="flex items-center gap-1 sm:gap-2">
-            <NavItem to="/" icon={<Home className="w-4 h-4" />} label="Home" active={isLinkActive('/')} />
-            <NavItem to="/bible" icon={<BookOpen className="w-4 h-4" />} label="Bible" active={isLinkActive('/bible')} />
-            <NavItem to="/solutions" icon={<Heart className="w-4 h-4" />} label="Guidance" active={isLinkActive('/solutions')} />
-            <NavItem to="/journey" icon={<History className="w-4 h-4" />} label="Journey" active={isLinkActive('/journey')} />
+            <NavItem to="/" icon={<Home className="w-4 h-4" />} label={t.nav.home} active={isLinkActive('/')} />
+            <NavItem to="/bible" icon={<BookOpen className="w-4 h-4" />} label={t.nav.bible} active={isLinkActive('/bible')} />
+            <NavItem to="/solutions" icon={<Heart className="w-4 h-4" />} label={t.nav.guidance} active={isLinkActive('/solutions')} />
+            <NavItem to="/journey" icon={<History className="w-4 h-4" />} label={t.nav.journey} active={isLinkActive('/journey')} />
             
             <div className="w-px h-6 bg-slate-200 mx-2" />
 
@@ -77,16 +79,16 @@ export function MainLayout({ children, language, setLanguage, ttsEnabled, toggle
             </div>
           </div>
           <div className="flex-1 text-center md:text-left space-y-4">
-            <h3 className="text-xl font-bold tracking-tight text-slate-800">About the Developer</h3>
+            <h3 className="text-xl font-bold tracking-tight text-slate-800">{t.footer.about}</h3>
             <p className="text-slate-600 leading-relaxed max-w-2xl">
-              <strong className="text-slate-900">Georkutty MC</strong> is a passionate developer and visionary who blends technology with faith to create accessible, interactive spiritual tools. Driven by a desire to make the teachings of the Holy Bible engaging and globally accessible, Georkutty built this platform to bridge the gap between ancient scripture and modern digital storytelling.
+              {t.footer.bio}
             </p>
             <div className="flex items-center justify-center md:justify-start gap-4 pt-2">
               <button className="px-5 py-2.5 text-sm font-medium text-white shadow-md bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full hover:from-blue-700 hover:to-indigo-700 transition-all">
-                Contact Form
+                {t.footer.contact}
               </button>
               <button className="px-5 py-2.5 text-sm font-medium text-slate-700 bg-white border border-slate-200 shadow-sm rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all">
-                LinkedIn Profile
+                {t.footer.linkedin}
               </button>
               <Link to="/admin-portal" className="text-slate-400 hover:text-indigo-600 p-2 transition-colors" title="Admin Portal">
                 <ShieldUser className="w-5 h-5" />
