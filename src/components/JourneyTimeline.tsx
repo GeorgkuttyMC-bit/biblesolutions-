@@ -10,18 +10,24 @@ export function JourneyTimeline({ language, ttsEnabled }: { language: string, tt
 
   const playAudio = (e: React.MouseEvent | null, text: string) => {
     if (e) e.stopPropagation();
-    if (!ttsEnabled) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    if (language === 'German') utterance.lang = 'de-DE';
-    else if (language === 'Malayalam') utterance.lang = 'ml-IN';
-    else utterance.lang = 'en-US';
-    window.speechSynthesis.speak(utterance);
+    if (!ttsEnabled || typeof window === 'undefined' || !window.speechSynthesis) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (language === 'German') utterance.lang = 'de-DE';
+      else if (language === 'Malayalam') utterance.lang = 'ml-IN';
+      else utterance.lang = 'en-US';
+      window.speechSynthesis.speak(utterance);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const stopAudio = (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.speechSynthesis.cancel();
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
   };
 
   return (

@@ -28,20 +28,29 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
           playAudio(data.solution, language);
         }
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      setSolution(`Error: Something went wrong on the client. ${e.message || e}`);
     } finally {
       setLoading(false);
     }
   };
 
   const playAudio = (text: string, lang: string) => {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    if (lang === 'German') utterance.lang = 'de-DE';
-    else if (lang === 'Malayalam') utterance.lang = 'ml-IN';
-    else utterance.lang = 'en-US';
-    window.speechSynthesis.speak(utterance);
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+      console.warn("Speech Synthesis not supported or restricted in this environment.");
+      return;
+    }
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (lang === 'German') utterance.lang = 'de-DE';
+      else if (lang === 'Malayalam') utterance.lang = 'ml-IN';
+      else utterance.lang = 'en-US';
+      window.speechSynthesis.speak(utterance);
+    } catch (err) {
+      console.error("Text-to-speech error:", err);
+    }
   };
 
   return (
