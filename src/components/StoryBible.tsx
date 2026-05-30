@@ -19,10 +19,17 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ verse, language })
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        throw new Error(`Invalid server response: ${text.substring(0, 80)}...`);
+      }
+      
       if (!res.ok) {
-        setStory(`Error: ${data.error || res.statusText}. Please check the server logs or verify your Gemini API key.`);
-      } else if (data.story) {
+        setStory(`Error: ${data?.error || res.statusText}. Please check the server logs or verify your Gemini API key.`);
+      } else if (data && data.story) {
         setStory(data.story);
         if (ttsEnabled) {
           playAudio(data.story, language);

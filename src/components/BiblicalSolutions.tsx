@@ -19,10 +19,17 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ issue, language })
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        throw new Error(`Invalid server response: ${text.substring(0, 80)}...`);
+      }
+
       if (!res.ok) {
-        setSolution(`Error: ${data.error || res.statusText}. Please check the server logs or verify your Gemini API key.`);
-      } else if (data.solution) {
+        setSolution(`Error: ${data?.error || res.statusText}. Please check the server logs or verify your Gemini API key.`);
+      } else if (data && data.solution) {
         setSolution(data.solution);
         if (ttsEnabled) {
           playAudio(data.solution, language);
