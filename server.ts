@@ -11,14 +11,25 @@ const PORT = 3000;
 
 app.use(express.json());
 
-const ai = new GoogleGenAI({ 
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
+let aiClient: GoogleGenAI | null = null;
+
+function getAI(): GoogleGenAI {
+  if (!aiClient) {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) {
+      throw new Error("GEMINI_API_KEY environment variable is missing.");
     }
+    aiClient = new GoogleGenAI({
+      apiKey: key,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
   }
-});
+  return aiClient;
+}
 
 // --- In-Memory DB for Analytics ---
 const analytics = {
@@ -67,8 +78,8 @@ app.post("/api/story", async (req, res) => {
 
     const prompt = `You are a knowledgeable and empathetic Christian storyteller. Create a short, engaging story that explains the historical background, context, and moral of the Bible verse "${verse}". Provide your response entirely in ${language}. Make it comforting, accessible, and narrative-driven.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+    const response = await getAI().models.generateContent({
+      model: "gemini-1.5-flash",
       contents: prompt,
     });
     
@@ -95,8 +106,8 @@ app.post("/api/solution", async (req, res) => {
 Analyze this issue and respond with relevant Bible verses and an encouraging explanation of how to apply the scripture to their life to find comfort and peace. 
 Provide your response entirely in ${language}, and keep your tone compassionate and supportive. Use markdown formatting.`;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+    const response = await getAI().models.generateContent({
+      model: "gemini-1.5-flash",
       contents: prompt,
     });
     
