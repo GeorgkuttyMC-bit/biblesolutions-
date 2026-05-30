@@ -57,7 +57,7 @@ export default async function handler(req: any, res: any) {
       const prompt = `You are a knowledgeable and empathetic Christian storyteller. Create a short, engaging story that explains the historical background, context, and moral of the Bible verse "${verse}". Provide your response entirely in ${language}. Make it comforting, accessible, and narrative-driven.`;
 
       const response = await getAI().models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3.5-flash",
         contents: prompt,
       });
       
@@ -77,7 +77,7 @@ Analyze this issue and respond with relevant Bible verses and an encouraging exp
 Provide your response entirely in ${language}, and keep your tone compassionate and supportive. Use markdown formatting.`;
 
       const response = await getAI().models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3.5-flash",
         contents: prompt,
       });
       
