@@ -1,6 +1,7 @@
 import express from "express";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import { logInteraction, getAnalytics } from "./src/lib/firebase-server.js";
 
 dotenv.config();
 
@@ -26,36 +27,8 @@ function getAI(): GoogleGenAI {
   return aiClient;
 }
 
-// --- In-Memory DB for Analytics ---
-const analytics = {
-  totalInteractions: 0,
-  languageMetrics: { English: 0, Malayalam: 0, German: 0 } as Record<string, number>,
-  popularVerses: {} as Record<string, number>,
-  commonThemes: {} as Record<string, number>
-};
-
-router.post("/analytics/interaction", (req, res) => {
-  analytics.totalInteractions++;
-  res.json({ success: true });
-});
-
-router.post("/analytics/language", (req, res) => {
-  const { lang } = req.body;
-  if (lang && analytics.languageMetrics[lang] !== undefined) {
-    analytics.languageMetrics[lang]++;
-  }
-  res.json({ success: true });
-});
-
-router.post("/analytics/verse", (req, res) => {
-  const { verse } = req.body;
-  if (verse) {
-    analytics.popularVerses[verse] = (analytics.popularVerses[verse] || 0) + 1;
-  }
-  res.json({ success: true });
-});
-
-router.get("/analytics", (req, res) => {
+router.get("/analytics", async (req, res) => {
+  const analytics = await getAnalytics();
   res.json(analytics);
 });
 
@@ -65,10 +38,7 @@ router.post("/story", async (req, res) => {
   try {
     const { verse, language } = req.body;
     
-    analytics.totalInteractions++;
-    if (verse) {
-       analytics.popularVerses[verse] = (analytics.popularVerses[verse] || 0) + 1;
-    }
+    await logInteraction('verse', verse, language || 'Unknown');
 
     const prompt = `You are a knowledgeable and empathetic Christian storyteller. For the Bible verse "${verse}":
 1. First, provide the text of the verse translated into ${language}.
@@ -92,12 +62,11 @@ router.post("/solution", async (req, res) => {
   try {
     const { issue, language } = req.body;
     
-    analytics.totalInteractions++;
-    
     const issueLower = issue.toLowerCase();
     const themes = ["anxiety", "grief", "purpose", "stress", "family", "guilt", "fear", "loneliness", "anger", "faith"];
     const foundTheme = themes.find(t => issueLower.includes(t)) || "general";
-    analytics.commonThemes[foundTheme] = (analytics.commonThemes[foundTheme] || 0) + 1;
+    
+    await logInteraction('issue', foundTheme, language || 'Unknown');
 
     const prompt = `You are a wise and empathetic Christian counselor. The user is struggling with: "${issue}". 
 Analyze this issue and respond with relevant Bible verses and an encouraging explanation of how to apply the scripture to their life to find comfort and peace. 
@@ -112,6 +81,24 @@ Provide your response entirely in ${language}, and keep your tone compassionate 
   } catch (error) {
     console.error("Solution API Error:", error);
     res.status(500).json({ error: `Failed to generate solution: ${error instanceof Error ? error.message : String(error)}` });
+  }
+});
+
+router.post("/daily-verse", async (req, res) => {
+  try {
+    const { language } = req.body;
+    
+    const prompt = `Provide a random, inspiring Bible verse for daily inspiration. Provide the verse text and the reference (e.g., John 3:16) in ${language}. Do not add any introductory or concluding text. Just the verse.`;
+
+    const response = await getAI().models.generateContent({
+      model: "gemini-3.5-flash",
+      contents: prompt,
+    });
+    
+    res.json({ verse: response.text });
+  } catch (error) {
+    console.error("Daily Verse API Error:", error);
+    res.status(500).json({ error: `Failed to fetch daily verse: ${error instanceof Error ? error.message : String(error)}` });
   }
 });
 

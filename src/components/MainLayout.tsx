@@ -1,5 +1,5 @@
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Home, BookOpen, Heart, History, Volume2, VolumeX, ShieldUser, Globe } from 'lucide-react';
+import { Home, BookOpen, Heart, History, Volume2, VolumeX, ShieldUser, Globe, User } from 'lucide-react';
 import { motion } from 'motion/react';
 import { translations } from '../translations';
 
@@ -53,6 +53,14 @@ export function MainLayout({ children, language, setLanguage, ttsEnabled, toggle
             >
               {ttsEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
             </button>
+            
+            <Link 
+              to="/admin-portal"
+              className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors ml-1"
+              title="Admin Dashboard"
+            >
+              <ShieldUser className="w-5 h-5" />
+            </Link>
           </nav>
         </div>
       </header>

@@ -1,0 +1,35 @@
+{
+  "entities": {
+    "AnalyticsStats": {
+      "title": "Analytics Status",
+      "description": "Global analytics for the app",
+      "type": "object",
+      "properties": {
+        "totalInteractions": { "type": "number", "description": "Total number of interactions" }
+      },
+      "required": ["totalInteractions"]
+    },
+    "QueryLog": {
+      "title": "Query Log",
+      "description": "Log of a user query",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["verse", "issue"] },
+        "query": { "type": "string" },
+        "language": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["type", "query", "language", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/analytics/stats": {
+      "schema": "AnalyticsStats",
+      "description": "Global analytics numbers"
+    },
+    "/queries/{queryId}": {
+      "schema": "QueryLog",
+      "description": "Individual queries made by users"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isValidAnalyticsStats(data) {
+      return data.keys().hasOnly(['totalInteractions']) &&
+             data.totalInteractions is number;
+    }
+
+    function isValidQueryLog(data) {
+      return data.keys().hasOnly(['type', 'query', 'language', 'timestamp']) &&
+             data.type is string && data.type.size() <= 20 &&
+             data.query is string && data.query.size() <= 1000 &&
+             data.language is string && data.language.size() <= 100 &&
+             data.timestamp is number;
+    }
+
+    match /analytics/{docId} {
+      allow read: if true;
+      allow create: if isValidAnalyticsStats(incoming());
+      allow update: if isValidAnalyticsStats(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['totalInteractions']);
+    }
+
+    match /queries/{queryId} {
+      allow read: if true;
+      allow create: if isValidId(queryId) && isValidQueryLog(incoming());
+      // Log entries shouldn't be updated normally
+      allow update: if false;
+    }
+    
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

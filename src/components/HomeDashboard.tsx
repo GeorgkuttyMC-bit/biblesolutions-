@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Heart, History, ArrowRight, Sparkles, MessageCircle, Navigation, PlayCircle } from 'lucide-react';
+import { BookOpen, Heart, History, ArrowRight, Sparkles, Navigation, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { translations } from '../translations';
 
@@ -23,6 +24,8 @@ export function HomeDashboard({ language }: { language: string }) {
           {t.subtitle}
         </p>
       </div>
+
+      <DailyInspiration language={language} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-16">
         <HeroCard
@@ -68,6 +71,67 @@ export function HomeDashboard({ language }: { language: string }) {
              <p className="text-slate-400">{t.guideDesc}</p>
            </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function DailyInspiration({ language }: { language: string }) {
+  const [verse, setVerse] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    // Basic caching mechanism to ensure we don't spam the API unnecessarily 
+    // and give the same verse per day ideally. For now, just fetching on mount.
+    setLoading(true);
+    fetch('/api/daily-verse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ language })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.verse) {
+          setVerse(data.verse);
+        } else {
+          setError(true);
+        }
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, [language]);
+
+  if (error || (!loading && !verse)) return null;
+
+  return (
+    <div className="w-full max-w-3xl mb-16 bg-white border border-slate-200 shadow-md rounded-3xl p-8 relative overflow-hidden">
+      <div className="absolute top-0 right-0 p-8 opacity-5">
+        <Sparkles className="w-32 h-32 text-indigo-900" />
+      </div>
+      
+      <div className="flex items-center gap-3 mb-6 relative z-10">
+        <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center">
+          <BookOpen className="w-5 h-5 text-indigo-600" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-800">Daily Inspiration</h2>
+      </div>
+
+      <div className="relative z-10 min-h-[80px] flex items-center">
+        {loading ? (
+          <div className="flex items-center gap-3 text-slate-500">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            <span>Finding today's verse...</span>
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-lg md:text-xl text-slate-700 italic font-medium leading-relaxed"
+          >
+            "{verse}"
+          </motion.div>
+        )}
       </div>
     </div>
   );
