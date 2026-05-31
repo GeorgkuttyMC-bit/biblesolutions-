@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Markdown from 'react-markdown';
 import { Loader2, PlayCircle, Book, Search, Sparkles, Ear, Square } from 'lucide-react';
 import { translations } from '../translations';
+import { playAudio, stopAudio } from '../lib/ttsUtils';
 
 export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnabled: boolean }) {
   const [verse, setVerse] = useState('');
@@ -40,25 +41,6 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
       setStory(`Error: Something went wrong on the client. ${e.message || e}`);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const playAudio = (text: string, lang: string) => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) {
-      console.warn("Speech Synthesis not supported or restricted in this environment.");
-      return;
-    }
-    try {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      
-      if (lang === 'German') utterance.lang = 'de-DE';
-      else if (lang === 'Malayalam') utterance.lang = 'ml-IN';
-      else utterance.lang = 'en-US';
-
-      window.speechSynthesis.speak(utterance);
-    } catch (err) {
-      console.error("Text-to-speech error:", err);
     }
   };
 
@@ -138,7 +120,7 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
                   {t.listen}
                 </button>
                 <button 
-                  onClick={() => window.speechSynthesis.cancel()}
+                  onClick={stopAudio}
                   className="px-4 py-2 bg-slate-50 text-slate-700 hover:bg-slate-200 hover:text-slate-800 rounded-xl flex items-center gap-2 transition font-medium"
                   title="Stop Audio"
                 >

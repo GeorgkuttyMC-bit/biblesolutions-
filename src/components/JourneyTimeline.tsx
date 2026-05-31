@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { History, PlayCircle, Map, MousePointerClick, Volume2, Square, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { translations } from '../translations';
+import { playAudio as playAudioFromUtils, stopAudio as stopAudioFromUtils } from '../lib/ttsUtils';
 
 export function JourneyTimeline({ language, ttsEnabled }: { language: string, ttsEnabled: boolean }) {
   const [activeNode, setActiveNode] = useState<number | null>(null);
@@ -10,24 +11,13 @@ export function JourneyTimeline({ language, ttsEnabled }: { language: string, tt
 
   const playAudio = (e: React.MouseEvent | null, text: string) => {
     if (e) e.stopPropagation();
-    if (!ttsEnabled || typeof window === 'undefined' || !window.speechSynthesis) return;
-    try {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      if (language === 'German') utterance.lang = 'de-DE';
-      else if (language === 'Malayalam') utterance.lang = 'ml-IN';
-      else utterance.lang = 'en-US';
-      window.speechSynthesis.speak(utterance);
-    } catch (err) {
-      console.error(err);
-    }
+    if (!ttsEnabled) return;
+    playAudioFromUtils(text, language);
   };
 
   const stopAudio = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-    }
+    stopAudioFromUtils();
   };
 
   return (
@@ -92,7 +82,7 @@ export function JourneyTimeline({ language, ttsEnabled }: { language: string, tt
                     onClick={() => {
                       if (activeNode === index) {
                         setActiveNode(null);
-                        window.speechSynthesis.cancel();
+                        stopAudioFromUtils();
                       } else {
                         setActiveNode(index);
                         playAudio(null, `${node.title}. ${node.desc}. ${node.details}`);
