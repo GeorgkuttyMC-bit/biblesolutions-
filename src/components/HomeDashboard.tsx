@@ -1,14 +1,65 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Heart, History, ArrowRight, Sparkles, Navigation, Loader2 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { BookOpen, Heart, History, ArrowRight, Sparkles, Navigation, Loader2, PlayCircle, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { translations } from '../translations';
+import { playAudio, stopAudio } from '../lib/ttsUtils';
 
 export function HomeDashboard({ language }: { language: string }) {
   const t = translations[language].home;
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  const playWelcomeAudio = () => {
+    const welcomeText = language === 'English' 
+      ? "Welcome to the Holy AI experience. This website is designed to help you explore the Bible in an interactive and comforting way. You can use the Story Bible to read verses with historical context and stories. If you need comfort, visit the Biblical Solutions page. To trace historical events, use the Journey Timeline. Select an option below to begin."
+      : language === 'Malayalam'
+      ? "Holy AI അനുഭവത്തിലേക്ക് സ്വാഗതം. നിങ്ങൾക്ക് ഈ വെബ്സൈറ്റ് വഴി ബൈബിൾ കഥകളിലൂടെയും ചരിത്രത്തിലൂടെയും പഠിക്കാം. സ്റ്റോറി ബൈബിൾ ഉപയോഗിച്ച് ഓരോ വചനത്തിന്റെയും സന്ദർഭവും അർത്ഥവും മനസ്സിലാക്കാം. ആശ്വാസത്തിനായി ബിബ്ലിക്കൽ സൊല്യൂഷൻസ് സന്ദർശിക്കുക. താഴെയുള്ള ഓപ്ഷനുകളിൽ നിന്ന് തിരഞ്ഞെടുക്കുക."
+      : "Willkommen beim Holy AI Erlebnis. Diese Website soll Ihnen helfen, die Bibel auf interaktive und tröstende Weise zu erkunden. Sie können die Geschichte der Bibel nutzen. Wählen Sie unten eine Option, um zu beginnen.";
+    
+    playAudio(welcomeText, language);
+    setShowWelcome(false);
+  };
+
+  const skipWelcome = () => {
+    setShowWelcome(false);
+    stopAudio();
+  };
 
   return (
-    <div className="flex flex-col items-center max-w-5xl mx-auto py-12">
+    <div className="flex flex-col items-center max-w-5xl mx-auto py-12 relative">
+      <AnimatePresence>
+        {showWelcome && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="w-full max-w-3xl mb-12 bg-indigo-50 border border-indigo-200 rounded-2xl p-6 shadow-md flex flex-col md:flex-row items-center gap-6"
+          >
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-indigo-900 mb-2">Audio Guide</h3>
+              <p className="text-indigo-700 leading-relaxed text-sm">
+                Click below to hear an introduction about how to use this website.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <button 
+                onClick={playWelcomeAudio}
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+              >
+                <PlayCircle className="w-5 h-5" /> Play Guide
+              </button>
+              <button 
+                onClick={skipWelcome}
+                className="p-3 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-100 rounded-xl transition-colors"
+                title="Dismiss"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="text-center mb-16 space-y-6 max-w-3xl">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 font-medium text-sm mb-4">
           <Sparkles className="w-4 h-4" />
