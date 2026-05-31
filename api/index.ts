@@ -54,7 +54,11 @@ export default async function handler(req: any, res: any) {
     try {
       const { verse, language } = req.body || {};
       
-      const prompt = `You are a knowledgeable and empathetic Christian storyteller. Create a short, engaging story that explains the historical background, context, and moral of the Bible verse "${verse}". Provide your response entirely in ${language}. Make it comforting, accessible, and narrative-driven.`;
+      const prompt = `You are a knowledgeable and empathetic Christian storyteller. For the Bible verse "${verse}":
+1. First, provide the text of the verse translated into ${language}.
+2. Then, provide a brief explanation of the verse.
+3. Finally, create a short, engaging story that explains the historical background, context, and moral of the verse. Make it comforting, accessible, and narrative-driven.
+Provide your entire response in ${language}.`;
 
       const response = await getAI().models.generateContent({
         model: "gemini-3.5-flash",
