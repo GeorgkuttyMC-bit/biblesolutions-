@@ -14,7 +14,7 @@ import { JourneyTimeline } from './components/JourneyTimeline';
 import { AdminDashboard } from './components/AdminDashboard';
 
 export default function App() {
-  const [language, setLanguage] = useState('English');
+  const [language, setLanguage] = useState('Malayalam');
   const [ttsEnabled, setTtsEnabled] = useState(true);
 
   return (
