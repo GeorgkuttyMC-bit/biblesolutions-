@@ -47,7 +47,7 @@ router.post("/story", async (req, res) => {
 Provide your entire response in ${language}.`;
 
     const response = await getAI().models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
     });
     
@@ -73,7 +73,7 @@ Analyze this issue and respond with relevant Bible verses and an encouraging exp
 Provide your response entirely in ${language}, and keep your tone compassionate and supportive. Use markdown formatting.`;
 
     const response = await getAI().models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
     });
     
@@ -91,7 +91,7 @@ router.post("/daily-verse", async (req, res) => {
     const prompt = `Provide a random, inspiring Bible verse for daily inspiration. Provide the verse text and the reference (e.g., John 3:16) in ${language}. Do not add any introductory or concluding text. Just the verse.`;
 
     const response = await getAI().models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
     });
     

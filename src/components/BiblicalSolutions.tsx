@@ -38,7 +38,11 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
       }
     } catch (e: any) {
       console.error(e);
-      setSolution(`Error: Something went wrong on the client. ${e.message || e}`);
+      let errorMsg = e.message || String(e);
+      if (errorMsg === 'Failed to fetch') {
+        errorMsg = 'Failed to connect. Please check your internet connection or disable ad-blockers, as they might block API requests.';
+      }
+      setSolution(`Error: Something went wrong on the client. ${errorMsg}`);
     } finally {
       setLoading(false);
     }

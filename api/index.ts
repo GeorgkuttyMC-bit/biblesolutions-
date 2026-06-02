@@ -61,7 +61,7 @@ export default async function handler(req: any, res: any) {
 Provide your entire response in ${language}.`;
 
       const response = await getAI().models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-3.1-flash-lite",
         contents: prompt,
       });
       
@@ -81,7 +81,7 @@ Analyze this issue and respond with relevant Bible verses and an encouraging exp
 Provide your response entirely in ${language}, and keep your tone compassionate and supportive. Use markdown formatting.`;
 
       const response = await getAI().models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-3.1-flash-lite",
         contents: prompt,
       });
       
@@ -89,6 +89,24 @@ Provide your response entirely in ${language}, and keep your tone compassionate 
     } catch (error) {
       console.error("Solution API Error:", error);
       return res.status(500).json({ error: `Failed to generate solution: ${error instanceof Error ? error.message : String(error)}` });
+    }
+  }
+
+  if (req.method === 'POST' && url.includes('/daily-verse')) {
+    try {
+      const { language } = req.body || {};
+      
+      const prompt = `Provide a random, inspiring Bible verse for daily inspiration. Provide the verse text and the reference (e.g., John 3:16) in ${language}. Do not add any introductory or concluding text. Just the verse.`;
+
+      const response = await getAI().models.generateContent({
+        model: "gemini-3.1-flash-lite",
+        contents: prompt,
+      });
+      
+      return res.status(200).json({ verse: response.text });
+    } catch (error) {
+      console.error("Daily Verse API Error:", error);
+      return res.status(500).json({ error: `Failed to fetch daily verse: ${error instanceof Error ? error.message : String(error)}` });
     }
   }
 
