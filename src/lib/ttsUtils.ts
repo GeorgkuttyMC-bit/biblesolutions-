@@ -1,6 +1,5 @@
 let activeUtterances: SpeechSynthesisUtterance[] = [];
 let currentLangCode = 'en-US';
-let resumeInterval: any = null;
 
 export function playAudio(text: string, lang: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) {
@@ -9,7 +8,6 @@ export function playAudio(text: string, lang: string) {
   }
   
   try {
-    if (resumeInterval) clearInterval(resumeInterval);
     window.speechSynthesis.cancel();
     activeUtterances = []; // reset
     
@@ -57,57 +55,33 @@ export function playAudio(text: string, lang: string) {
     
     if (chunks.length === 0) return;
 
-    const speakChunk = (index: number) => {
-        if (index >= chunks.length) {
-             if (resumeInterval) {
-                 clearInterval(resumeInterval);
-                 resumeInterval = null;
-             }
-             return;
-        }
-
-        const chunk = chunks[index];
-        const utterance = new SpeechSynthesisUtterance(chunk);
-        utterance.lang = currentLangCode;
-        
+    const speakAll = () => {
         const voices = window.speechSynthesis.getVoices();
         const preferredVoice = voices.find(v => v.lang.startsWith(currentLangCode) || v.lang.replace('_', '-').startsWith(currentLangCode));
-        if (preferredVoice) {
-            utterance.voice = preferredVoice;
-        }
 
-        utterance.onend = () => speakChunk(index + 1);
-        utterance.onerror = (e) => {
-            console.error("TTS error:", e);
-            speakChunk(index + 1); // attempt to continue
-        };
-
-        // Keep a reference to prevent garbage collection
-        activeUtterances.push(utterance);
-        window.speechSynthesis.speak(utterance);
+        chunks.forEach(chunk => {
+            const utterance = new SpeechSynthesisUtterance(chunk);
+            utterance.lang = currentLangCode;
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            }
+            
+            // Keep a reference to prevent garbage collection
+            activeUtterances.push(utterance);
+            window.speechSynthesis.speak(utterance);
+        });
     };
 
     // If voices are not yet loaded (WebKit/Chrome quirk), wait for them, otherwise speak immediately
     if (window.speechSynthesis.getVoices().length === 0) {
         const onVoicesReady = () => {
-             speakChunk(0);
+             speakAll();
              window.speechSynthesis.removeEventListener('voiceschanged', onVoicesReady);
         };
         window.speechSynthesis.addEventListener('voiceschanged', onVoicesReady);
     } else {
-        speakChunk(0);
+        speakAll();
     }
-
-    // Bug fix for Chrome on Android/Desktop: keeps the engine awake for long texts
-    resumeInterval = setInterval(() => {
-        if (!window.speechSynthesis.speaking) {
-            clearInterval(resumeInterval);
-            resumeInterval = null;
-        } else {
-            window.speechSynthesis.pause();
-            window.speechSynthesis.resume();
-        }
-    }, 10000);
 
   } catch (err) {
     console.error("Text-to-speech error:", err);
@@ -116,10 +90,6 @@ export function playAudio(text: string, lang: string) {
 
 export function stopAudio() {
   if (typeof window !== 'undefined' && window.speechSynthesis) {
-    if (resumeInterval) {
-        clearInterval(resumeInterval);
-        resumeInterval = null;
-    }
     window.speechSynthesis.cancel();
     activeUtterances = [];
   }
