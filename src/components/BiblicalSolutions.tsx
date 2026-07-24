@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
 import { Loader2, PlayCircle, Heart, MessageSquare, Anchor, Sunrise, Square } from 'lucide-react';
 import { translations } from '../translations';
@@ -9,6 +9,12 @@ export function BiblicalSolutions({ language, ttsEnabled }: { language: string, 
   const [solution, setSolution] = useState('');
   const [loading, setLoading] = useState(false);
   const t = translations[language].solutions;
+
+  useEffect(() => {
+    return () => {
+      stopAudio();
+    };
+  }, []);
 
   const getSolution = async () => {
     if (!issue.trim()) return;

@@ -9,6 +9,12 @@ export function HomeDashboard({ language }: { language: string }) {
   const t = translations[language].home;
   const [showWelcome, setShowWelcome] = useState(true);
 
+  useEffect(() => {
+    return () => {
+      stopAudio();
+    };
+  }, []);
+
   const playWelcomeAudio = () => {
     const welcomeText = language === 'English' 
       ? "Welcome to the Holy AI experience. This website is designed to help you explore the Bible in an interactive and comforting way. Here is a step-by-step guide on how each section works: First, the Story Bible. Here, you can select any book, chapter, and verse from the Old or New Testament, or simply type a verse. We will provide the scripture along with a narrative story explaining its historical context and moral. Second, Biblical Solutions. If you are facing a challenge like anxiety or grief, simply type what you are feeling. We will offer comforting Bible verses and a compassionate explanation to guide you. Third, the Journey Timeline. You can visually trace epic biblical journeys on an interactive map. Finally, you can use the top menu to switch languages or toggle this voice-over feature. Select an option below to begin your journey."

@@ -57,44 +57,57 @@ export function playAudio(text: string, lang: string) {
     
     if (chunks.length === 0) return;
 
-    const speakAll = () => {
+    const speakChunk = (index: number) => {
+        if (index >= chunks.length) {
+             if (resumeInterval) {
+                 clearInterval(resumeInterval);
+                 resumeInterval = null;
+             }
+             return;
+        }
+
+        const chunk = chunks[index];
+        const utterance = new SpeechSynthesisUtterance(chunk);
+        utterance.lang = currentLangCode;
+        
         const voices = window.speechSynthesis.getVoices();
         const preferredVoice = voices.find(v => v.lang.startsWith(currentLangCode) || v.lang.replace('_', '-').startsWith(currentLangCode));
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
 
-        chunks.forEach((chunk) => {
-            const utterance = new SpeechSynthesisUtterance(chunk);
-            utterance.lang = currentLangCode;
-            if (preferredVoice) {
-                utterance.voice = preferredVoice;
-            }
-            
-            // Keep a reference to prevent garbage collection
-            activeUtterances.push(utterance);
-            window.speechSynthesis.speak(utterance);
-        });
+        utterance.onend = () => speakChunk(index + 1);
+        utterance.onerror = (e) => {
+            console.error("TTS error:", e);
+            speakChunk(index + 1); // attempt to continue
+        };
 
-        // Bug fix for Chrome on Android: keeps the engine awake for long texts
-        resumeInterval = setInterval(() => {
-            if (!window.speechSynthesis.speaking) {
-                clearInterval(resumeInterval);
-                resumeInterval = null;
-            } else {
-                window.speechSynthesis.pause();
-                window.speechSynthesis.resume();
-            }
-        }, 10000);
+        // Keep a reference to prevent garbage collection
+        activeUtterances.push(utterance);
+        window.speechSynthesis.speak(utterance);
     };
 
     // If voices are not yet loaded (WebKit/Chrome quirk), wait for them, otherwise speak immediately
     if (window.speechSynthesis.getVoices().length === 0) {
         const onVoicesReady = () => {
-             speakAll();
+             speakChunk(0);
              window.speechSynthesis.removeEventListener('voiceschanged', onVoicesReady);
         };
         window.speechSynthesis.addEventListener('voiceschanged', onVoicesReady);
     } else {
-        speakAll();
+        speakChunk(0);
     }
+
+    // Bug fix for Chrome on Android/Desktop: keeps the engine awake for long texts
+    resumeInterval = setInterval(() => {
+        if (!window.speechSynthesis.speaking) {
+            clearInterval(resumeInterval);
+            resumeInterval = null;
+        } else {
+            window.speechSynthesis.pause();
+            window.speechSynthesis.resume();
+        }
+    }, 10000);
 
   } catch (err) {
     console.error("Text-to-speech error:", err);

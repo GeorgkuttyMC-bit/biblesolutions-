@@ -31,6 +31,12 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
 
   const currentVerse = selectedBook ? `${selectedBook} ${chapter ? chapter : ''}${chapter && verseNum ? ':' + verseNum : ''}`.trim() : verseText;
 
+  useEffect(() => {
+    return () => {
+      stopAudio();
+    };
+  }, []);
+
   const getStory = async () => {
     const finalVerse = selectedBook ? `${selectedBook} ${chapter ? chapter : ''}${chapter && verseNum ? ':' + verseNum : ''}`.trim() : verseText;
     if (!finalVerse) return;
