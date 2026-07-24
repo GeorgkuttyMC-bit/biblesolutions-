@@ -33,7 +33,7 @@ export function MainLayout({ children, language, setLanguage, ttsEnabled, toggle
             <div className="w-px h-6 bg-slate-200 mx-2" />
 
             {/* Language Selector */}
-            <div className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 transition-colors p-1 rounded-lg">
+            <div id="nav-language" className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 transition-colors p-1 rounded-lg">
               <Globe className="w-4 h-4 text-slate-600 ml-2" />
               <select 
                 value={language} 
@@ -47,6 +47,7 @@ export function MainLayout({ children, language, setLanguage, ttsEnabled, toggle
             </div>
             
             <button
+              id="nav-tts"
               onClick={toggleTts}
               className={`p-2 rounded-lg transition-colors ml-1 ${ttsEnabled ? 'text-blue-600 bg-blue-50 hover:bg-blue-100' : 'text-slate-400 hover:bg-slate-100'}`}
               title={ttsEnabled ? "Disable Voiceover" : "Enable Voiceover"}

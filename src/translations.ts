@@ -20,6 +20,35 @@ export const translations: Record<string, any> = {
       welcome: "Welcome to Your",
       guideTitle: "How to Get Started",
       guideDesc: "Select your preferred language at the top right of the navigation bar. Your selection will instantly translate the interface and adjust the voiceover language for stories and historical readings.",
+      startTour: "Start Interactive Tour",
+      tour: {
+        next: "Next",
+        back: "Back",
+        skip: "Skip",
+        last: "Finish",
+        steps: {
+          navLanguage: {
+            title: "Language Selection",
+            content: "You can change the application language here. It supports English, Malayalam, and German."
+          },
+          navTts: {
+            title: "Voiceover Toggle",
+            content: "Turn the automatic text-to-speech voiceover on or off."
+          },
+          bibleCard: {
+            title: "Story Bible",
+            content: "Enter any Bible verse here, and our AI will narrate its history and moral."
+          },
+          solutionsCard: {
+            title: "Biblical Solutions",
+            content: "Share your life struggles here to receive comforting Bible verses and guidance."
+          },
+          journeyCard: {
+            title: "Journey of Faith",
+            content: "Explore the interactive timeline of Christian history from 33 AD to modern times."
+          }
+        }
+      },
       cards: {
         bible: {
           title: "Story Bible",
@@ -163,6 +192,35 @@ export const translations: Record<string, any> = {
       welcome: "സ്വാഗതം",
       guideTitle: "എങ്ങനെ തുടങ്ങാം",
       guideDesc: "നാവിഗേഷൻ ബാറിന്റെ മുകളിൽ വലതുവശത്ത് നിന്ന് നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക. ഇത് ഉടനടി എല്ലാം വിവർത്തനം ചെയ്യുകയും വോയ്‌സ്‌ഓവർ ക്രമീകരിക്കുകയും ചെയ്യും.",
+      startTour: "സംവേദനാത്മക ടൂർ ആരംഭിക്കുക",
+      tour: {
+        next: "അടുത്തത്",
+        back: "പുറകോട്ട്",
+        skip: "ഒഴിവാക്കുക",
+        last: "പൂർത്തിയാക്കുക",
+        steps: {
+          navLanguage: {
+            title: "ഭാഷ തിരഞ്ഞെടുക്കൽ",
+            content: "നിങ്ങൾക്ക് ഇവിടെ ആപ്ലിക്കേഷൻ ഭാഷ മാറ്റാം. ഇത് ഇംഗ്ലീഷ്, മലയാളം, ജർമ്മൻ എന്നിവയെ പിന്തുണയ്ക്കുന്നു."
+          },
+          navTts: {
+            title: "വോയ്‌സ്‌ഓവർ ടോഗിൾ",
+            content: "ഓട്ടോമാറ്റിക് ടെക്സ്റ്റ്-ടു-സ്പീച്ച് വോയ്‌സ്‌ഓവർ ഓണാക്കുകയോ ഓഫാക്കുകയോ ചെയ്യുക."
+          },
+          bibleCard: {
+            title: "കഥാ ബൈബിൾ",
+            content: "ഏതെങ്കിലും ബൈബിൾ വാക്യം ഇവിടെ നൽകുക, ഞങ്ങളുടെ AI അതിന്റെ ചരിത്രവും ധാർമ്മികതയും വിവരിക്കും."
+          },
+          solutionsCard: {
+            title: "ബൈബിൾ പരിഹാരങ്ങൾ",
+            content: "ആശ്വാസകരമായ ബൈബിൾ വാക്യങ്ങളും മാർഗ്ഗനിർദ്ദേശങ്ങളും ലഭിക്കുന്നതിന് നിങ്ങളുടെ ജീവിത പോരാട്ടങ്ങൾ ഇവിടെ പങ്കിടുക."
+          },
+          journeyCard: {
+            title: "വിശ്വാസത്തിന്റെ യാത്ര",
+            content: "എ.ഡി 33 മുതൽ ആധുനിക കാലം വരെയുള്ള ക്രിസ്തീയ ചരിത്രത്തിന്റെ സംവേദനാത്മക ടൈംലൈൻ പര്യവേക്ഷണം ചെയ്യുക."
+          }
+        }
+      },
       cards: {
         bible: {
           title: "കഥാ ബൈബിൾ",
@@ -306,6 +364,35 @@ export const translations: Record<string, any> = {
       welcome: "Willkommen auf deiner",
       guideTitle: "So fangen Sie an",
       guideDesc: "Wählen Sie oben rechts in der Navigationsleiste Ihre bevorzugte Sprache aus. Ihre Auswahl übersetzt sofort die Oberfläche und passt die Voiceover-Sprache an.",
+      startTour: "Interaktive Tour starten",
+      tour: {
+        next: "Weiter",
+        back: "Zurück",
+        skip: "Überspringen",
+        last: "Beenden",
+        steps: {
+          navLanguage: {
+            title: "Sprachauswahl",
+            content: "Hier können Sie die Sprache der Anwendung ändern. Unterstützt werden Englisch, Malayalam und Deutsch."
+          },
+          navTts: {
+            title: "Sprachausgabe umschalten",
+            content: "Schalten Sie die automatische Sprachausgabe ein oder aus."
+          },
+          bibleCard: {
+            title: "Geschichten-Bibel",
+            content: "Geben Sie hier einen Bibelvers ein, und unsere KI wird seine Geschichte und Moral erzählen."
+          },
+          solutionsCard: {
+            title: "Biblische Lösungen",
+            content: "Teilen Sie hier Ihre Lebenskämpfe, um tröstende Bibelverse und Führung zu erhalten."
+          },
+          journeyCard: {
+            title: "Glaubensreise",
+            content: "Erkunden Sie die interaktive Zeitachse der christlichen Geschichte von 33 n. Chr. bis heute."
+          }
+        }
+      },
       cards: {
         bible: {
           title: "Geschichten-Bibel",

@@ -1,13 +1,61 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Heart, History, ArrowRight, Sparkles, Navigation, Loader2, PlayCircle, X } from 'lucide-react';
+import { BookOpen, Heart, History, ArrowRight, Sparkles, Navigation, Loader2, PlayCircle, X, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Joyride, STATUS, CallBackProps } from 'react-joyride';
 import { translations } from '../translations';
 import { playAudio, stopAudio } from '../lib/ttsUtils';
 
 export function HomeDashboard({ language }: { language: string }) {
   const t = translations[language].home;
   const [showWelcome, setShowWelcome] = useState(true);
+
+  const [{ run, steps }, setTourState] = useState({
+    run: false,
+    steps: []
+  });
+
+  useEffect(() => {
+    setTourState(prev => ({
+      ...prev,
+      steps: [
+        {
+          target: '#nav-language',
+          content: t.tour.steps.navLanguage.content,
+          title: t.tour.steps.navLanguage.title,
+          disableBeacon: true,
+        },
+        {
+          target: '#nav-tts',
+          content: t.tour.steps.navTts.content,
+          title: t.tour.steps.navTts.title,
+        },
+        {
+          target: '#tour-bible-card',
+          content: t.tour.steps.bibleCard.content,
+          title: t.tour.steps.bibleCard.title,
+        },
+        {
+          target: '#tour-solutions-card',
+          content: t.tour.steps.solutionsCard.content,
+          title: t.tour.steps.solutionsCard.title,
+        },
+        {
+          target: '#tour-journey-card',
+          content: t.tour.steps.journeyCard.content,
+          title: t.tour.steps.journeyCard.title,
+        }
+      ]
+    }));
+  }, [language, t]);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status } = data;
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+    if (finishedStatuses.includes(status)) {
+      setTourState(prev => ({ ...prev, run: false }));
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -33,6 +81,27 @@ export function HomeDashboard({ language }: { language: string }) {
 
   return (
     <div className="flex flex-col items-center max-w-5xl mx-auto py-12 relative">
+      <Joyride
+        steps={steps}
+        run={run}
+        continuous={true}
+        showProgress={true}
+        showSkipButton={true}
+        callback={handleJoyrideCallback}
+        locale={{
+          back: t.tour?.back || 'Back',
+          close: 'Close',
+          last: t.tour?.last || 'Finish',
+          next: t.tour?.next || 'Next',
+          skip: t.tour?.skip || 'Skip',
+        }}
+        styles={{
+          options: {
+            primaryColor: '#4f46e5',
+            zIndex: 1000,
+          }
+        }}
+      />
       <AnimatePresence>
         {showWelcome && (
           <motion.div 
@@ -53,6 +122,12 @@ export function HomeDashboard({ language }: { language: string }) {
                 className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
               >
                 <PlayCircle className="w-5 h-5" /> Play Guide
+              </button>
+              <button 
+                onClick={() => setTourState(prev => ({ ...prev, run: true }))}
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+              >
+                <Info className="w-5 h-5" /> {t.startTour || 'Start Interactive Tour'}
               </button>
               <button 
                 onClick={skipWelcome}
@@ -86,6 +161,7 @@ export function HomeDashboard({ language }: { language: string }) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-16">
         <HeroCard
+          id="tour-bible-card"
           to="/bible"
           icon={<BookOpen className="w-8 h-8 text-indigo-100" />}
           title={t.cards.bible.title}
@@ -96,6 +172,7 @@ export function HomeDashboard({ language }: { language: string }) {
           howToUse={t.cards.bible.howToUse}
         />
         <HeroCard
+          id="tour-solutions-card"
           to="/solutions"
           icon={<Heart className="w-8 h-8 text-rose-100" />}
           title={t.cards.solutions.title}
@@ -106,6 +183,7 @@ export function HomeDashboard({ language }: { language: string }) {
           howToUse={t.cards.solutions.howToUse}
         />
         <HeroCard
+          id="tour-journey-card"
           to="/journey"
           icon={<History className="w-8 h-8 text-amber-100" />}
           title={t.cards.journey.title}
@@ -194,9 +272,9 @@ function DailyInspiration({ language }: { language: string }) {
   );
 }
 
-function HeroCard({ to, icon, title, desc, bg, steps, action, howToUse }: any) {
+function HeroCard({ id, to, icon, title, desc, bg, steps, action, howToUse }: any) {
   return (
-    <Link to={to} className="group relative bg-white border border-slate-200 rounded-3xl p-1 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-2 overflow-hidden">
+    <Link id={id} to={to} className="group relative bg-white border border-slate-200 rounded-3xl p-1 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-2 overflow-hidden">
       <div className="p-8 pb-6 bg-white rounded-[22px] flex flex-col h-full z-10 relative">
         <div className={`w-16 h-16 rounded-2xl ${bg} flex items-center justify-center mb-6 shadow-md shadow-slate-200 transform group-hover:scale-110 transition-transform duration-300`}>
           {icon}
