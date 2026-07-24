@@ -56,7 +56,23 @@ export const translations: Record<string, any> = {
       button: "Explore Context",
       exploring: "Exploring",
       listen: "Listen",
-      stop: "Stop"
+      stop: "Stop",
+      chapter: "Chapter",
+      verse: "Verse",
+      selectBookOptional: "Select a Book (Optional)",
+      oldTestament: "Old Testament",
+      newTestament: "New Testament",
+      books: {
+        "Genesis": "Genesis", "Exodus": "Exodus", "Leviticus": "Leviticus", "Numbers": "Numbers", "Deuteronomy": "Deuteronomy", "Joshua": "Joshua", "Judges": "Judges", "Ruth": "Ruth",
+        "1 Samuel": "1 Samuel", "2 Samuel": "2 Samuel", "1 Kings": "1 Kings", "2 Kings": "2 Kings", "1 Chronicles": "1 Chronicles", "2 Chronicles": "2 Chronicles", "Ezra": "Ezra", "Nehemiah": "Nehemiah",
+        "Esther": "Esther", "Job": "Job", "Psalms": "Psalms", "Proverbs": "Proverbs", "Ecclesiastes": "Ecclesiastes", "Song of Solomon": "Song of Solomon", "Isaiah": "Isaiah", "Jeremiah": "Jeremiah",
+        "Lamentations": "Lamentations", "Ezekiel": "Ezekiel", "Daniel": "Daniel", "Hosea": "Hosea", "Joel": "Joel", "Amos": "Amos", "Obadiah": "Obadiah", "Jonah": "Jonah", "Micah": "Micah",
+        "Nahum": "Nahum", "Habakkuk": "Habakkuk", "Zephaniah": "Zephaniah", "Haggai": "Haggai", "Zechariah": "Zechariah", "Malachi": "Malachi",
+        "Matthew": "Matthew", "Mark": "Mark", "Luke": "Luke", "John": "John", "Acts": "Acts", "Romans": "Romans", "1 Corinthians": "1 Corinthians", "2 Corinthians": "2 Corinthians",
+        "Galatians": "Galatians", "Ephesians": "Ephesians", "Philippians": "Philippians", "Colossians": "Colossians", "1 Thessalonians": "1 Thessalonians", "2 Thessalonians": "2 Thessalonians",
+        "1 Timothy": "1 Timothy", "2 Timothy": "2 Timothy", "Titus": "Titus", "Philemon": "Philemon", "Hebrews": "Hebrews", "James": "James", "1 Peter": "1 Peter", "2 Peter": "2 Peter",
+        "1 John": "1 John", "2 John": "2 John", "3 John": "3 John", "Jude": "Jude", "Revelation": "Revelation"
+      }
     },
     solutions: {
       title: "Biblical Guidance & Solutions",
@@ -183,7 +199,23 @@ export const translations: Record<string, any> = {
       button: "പശ്ചാത്തലം പര്യവേക്ഷണം ചെയ്യുക",
       exploring: "പഠിക്കുന്നു",
       listen: "കേൾക്കുക",
-      stop: "നിർത്തുക"
+      stop: "നിർത്തുക",
+      chapter: "അധ്യായം",
+      verse: "വാക്യം",
+      selectBookOptional: "ഒരു പുസ്തകം തിരഞ്ഞെടുക്കുക (ഓപ്ഷണൽ)",
+      oldTestament: "പഴയ നിയമം",
+      newTestament: "പുതിയ നിയമം",
+      books: {
+        "Genesis": "ഉല്പത്തി", "Exodus": "പുറപ്പാടു്", "Leviticus": "ലേവ്യപുസ്തകം", "Numbers": "സംഖ്യാപുസ്തകം", "Deuteronomy": "ആവർത്തനം", "Joshua": "യോശുവ", "Judges": "ന്യായാധിപന്മാർ", "Ruth": "രൂത്ത്",
+        "1 Samuel": "1 ശമൂവേൽ", "2 Samuel": "2 ശമൂവേൽ", "1 Kings": "1 രാജാക്കന്മാർ", "2 Kings": "2 രാജാക്കന്മാർ", "1 Chronicles": "1 ദിനവൃത്താന്തം", "2 Chronicles": "2 ദിനവൃത്താന്തം", "Ezra": "എസ്രാ", "Nehemiah": "നെഹെമ്യാവു",
+        "Esther": "എസ്ഥേർ", "Job": "ഇയ്യോബ്", "Psalms": "സങ്കീർത്തനങ്ങൾ", "Proverbs": "സദൃശവാക്യങ്ങൾ", "Ecclesiastes": "സഭാപ്രസംഗി", "Song of Solomon": "ഉത്തമഗീതം", "Isaiah": "യെശയ്യാ", "Jeremiah": "യിരെമ്യാവു",
+        "Lamentations": "വിലാപങ്ങൾ", "Ezekiel": "യെഹെസ്കേൽ", "Daniel": "ദാനീയേൽ", "Hosea": "ഹോശേയ", "Joel": "യോവേൽ", "Amos": "ആമോസ്", "Obadiah": "ഓബദ്യാവു", "Jonah": "യോനാ", "Micah": "മീഖാ",
+        "Nahum": "നഹൂം", "Habakkuk": "ഹബക്കൂക്", "Zephaniah": "സെഫന്യാവു", "Haggai": "ഹഗ്ഗായി", "Zechariah": "സെഖര്യാവു", "Malachi": "മലാഖി",
+        "Matthew": "മത്തായി", "Mark": "മർക്കൊസ്", "Luke": "ലൂക്കൊസ്", "John": "യോഹന്നാൻ", "Acts": "പ്രവൃത്തികൾ", "Romans": "റോമർ", "1 Corinthians": "1 കൊരിന്ത്യർ", "2 Corinthians": "2 കൊരിന്ത്യർ",
+        "Galatians": "ഗലാത്യർ", "Ephesians": "എഫെസ്യർ", "Philippians": "ഫിലിപ്പിയർ", "Colossians": "കൊലൊസ്സ്യർ", "1 Thessalonians": "1 തെസ്സലൊനീക്യർ", "2 Thessalonians": "2 തെസ്സലൊനീക്യർ",
+        "1 Timothy": "1 തിമൊഥെയൊസ്", "2 Timothy": "2 തിമൊഥെയൊസ്", "Titus": "തീത്തൊസ്", "Philemon": "ഫിലേമോൻ", "Hebrews": "എബ്രായർ", "James": "യാക്കോബ്", "1 Peter": "1 പത്രൊസ്", "2 Peter": "2 പത്രൊസ്",
+        "1 John": "1 യോഹന്നാൻ", "2 John": "2 യോഹന്നാൻ", "3 John": "3 യോഹന്നാൻ", "Jude": "യൂദാ", "Revelation": "വെളിപ്പാടു"
+      }
     },
     solutions: {
       title: "ബൈബിൾ മാർഗ്ഗനിർദ്ദേശങ്ങളും പരിഹാരങ്ങളും",
@@ -310,7 +342,23 @@ export const translations: Record<string, any> = {
       button: "Kontext erkunden",
       exploring: "Erkundung von",
       listen: "Anhören",
-      stop: "Stopp"
+      stop: "Stopp",
+      chapter: "Kapitel",
+      verse: "Vers",
+      selectBookOptional: "Buch auswählen (Optional)",
+      oldTestament: "Altes Testament",
+      newTestament: "Neues Testament",
+      books: {
+        "Genesis": "1 Mose", "Exodus": "2 Mose", "Leviticus": "3 Mose", "Numbers": "4 Mose", "Deuteronomy": "5 Mose", "Joshua": "Josua", "Judges": "Richter", "Ruth": "Rut",
+        "1 Samuel": "1 Samuel", "2 Samuel": "2 Samuel", "1 Kings": "1 Könige", "2 Kings": "2 Könige", "1 Chronicles": "1 Chronik", "2 Chronicles": "2 Chronik", "Ezra": "Esra", "Nehemiah": "Nehemia",
+        "Esther": "Ester", "Job": "Hiob", "Psalms": "Psalmen", "Proverbs": "Sprüche", "Ecclesiastes": "Prediger", "Song of Solomon": "Hoheslied", "Isaiah": "Jesaja", "Jeremiah": "Jeremia",
+        "Lamentations": "Klagelieder", "Ezekiel": "Hesekiel", "Daniel": "Daniel", "Hosea": "Hosea", "Joel": "Joel", "Amos": "Amos", "Obadiah": "Obadja", "Jonah": "Jona", "Micah": "Micha",
+        "Nahum": "Nahum", "Habakkuk": "Habakuk", "Zephaniah": "Zefanja", "Haggai": "Haggai", "Zechariah": "Sacharja", "Malachi": "Maleachi",
+        "Matthew": "Matthäus", "Mark": "Markus", "Luke": "Lukas", "John": "Johannes", "Acts": "Apostelgeschichte", "Romans": "Römer", "1 Corinthians": "1 Korinther", "2 Corinthians": "2 Korinther",
+        "Galatians": "Galater", "Ephesians": "Epheser", "Philippians": "Philipper", "Colossians": "Kolosser", "1 Thessalonians": "1 Thessalonicher", "2 Thessalonians": "2 Thessalonicher",
+        "1 Timothy": "1 Timotheus", "2 Timothy": "2 Timotheus", "Titus": "Titus", "Philemon": "Philemon", "Hebrews": "Hebräer", "James": "Jakobus", "1 Peter": "1 Petrus", "2 Peter": "2 Petrus",
+        "1 John": "1 Johannes", "2 John": "2 Johannes", "3 John": "3 Johannes", "Jude": "Judas", "Revelation": "Offenbarung"
+      }
     },
     solutions: {
       title: "Biblische Führung & Lösungen",

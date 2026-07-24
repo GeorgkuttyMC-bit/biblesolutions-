@@ -120,12 +120,12 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
             onChange={e => setSelectedBook(e.target.value)}
             className="flex-1 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg transition-all"
           >
-            <option value="">Select a Book (Optional)</option>
-            <optgroup label="Old Testament">
-              {oldTestamentBooks.map(b => <option key={b} value={b}>{b}</option>)}
+            <option value="">{t.selectBookOptional}</option>
+            <optgroup label={t.oldTestament}>
+              {oldTestamentBooks.map(b => <option key={b} value={b}>{t.books[b] || b}</option>)}
             </optgroup>
-            <optgroup label="New Testament">
-              {newTestamentBooks.map(b => <option key={b} value={b}>{b}</option>)}
+            <optgroup label={t.newTestament}>
+              {newTestamentBooks.map(b => <option key={b} value={b}>{t.books[b] || b}</option>)}
             </optgroup>
           </select>
 
@@ -136,7 +136,7 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
                 value={chapter}
                 onChange={e => setChapter(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && getStory()}
-                placeholder="Chapter"
+                placeholder={t.chapter}
                 min="1"
                 className="w-1/2 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg transition-all"
               />
@@ -145,7 +145,7 @@ export function StoryBible({ language, ttsEnabled }: { language: string, ttsEnab
                 value={verseNum}
                 onChange={e => setVerseNum(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && getStory()}
-                placeholder="Verse"
+                placeholder={t.verse}
                 min="1"
                 className="w-1/2 px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg transition-all"
               />
