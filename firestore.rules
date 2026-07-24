@@ -6,8 +6,10 @@ service cloud.firestore {
     function existing() { return resource.data; }
 
     function isValidAnalyticsStats(data) {
-      return data.keys().hasOnly(['totalInteractions']) &&
-             data.totalInteractions is number;
+      return data.keys().hasAny(['totalInteractions', 'totalVisitors']) &&
+             data.keys().hasOnly(['totalInteractions', 'totalVisitors']) &&
+             (data.keys().hasAll(['totalInteractions']) ? data.totalInteractions is number : true) &&
+             (data.keys().hasAll(['totalVisitors']) ? data.totalVisitors is number : true);
     }
 
     function isValidQueryLog(data) {
@@ -21,7 +23,7 @@ service cloud.firestore {
     match /analytics/{docId} {
       allow read: if true;
       allow create: if isValidAnalyticsStats(incoming());
-      allow update: if isValidAnalyticsStats(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['totalInteractions']);
+      allow update: if isValidAnalyticsStats(incoming()) && incoming().diff(existing()).affectedKeys().hasOnly(['totalInteractions', 'totalVisitors']);
     }
 
     match /queries/{queryId} {

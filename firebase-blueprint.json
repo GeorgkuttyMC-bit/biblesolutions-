@@ -5,7 +5,8 @@
       "description": "Global analytics for the app",
       "type": "object",
       "properties": {
-        "totalInteractions": { "type": "number", "description": "Total number of interactions" }
+        "totalInteractions": { "type": "number", "description": "Total number of interactions" },
+        "totalVisitors": { "type": "number", "description": "Total number of visitors" }
       },
       "required": ["totalInteractions"]
     },

@@ -2,6 +2,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Home, BookOpen, Heart, History, Volume2, VolumeX, ShieldUser, Globe, User } from 'lucide-react';
 import { motion } from 'motion/react';
 import { translations } from '../translations';
+import { VisitorCounter } from './VisitorCounter';
 
 export function MainLayout({ children, language, setLanguage, ttsEnabled, toggleTts }: any) {
   const navigate = useNavigate();
@@ -106,6 +107,7 @@ export function MainLayout({ children, language, setLanguage, ttsEnabled, toggle
           </div>
         </div>
       </footer>
+      <VisitorCounter language={language} />
     </div>
   );
 }
