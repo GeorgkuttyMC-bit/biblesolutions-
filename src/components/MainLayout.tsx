@@ -83,11 +83,6 @@ export function MainLayout({ children, language, setLanguage, ttsEnabled, toggle
       {/* Global Footer */}
       <footer className="bg-white border-t border-slate-200 mt-auto">
         <div className="max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row items-center md:items-start gap-8">
-          <div className="flex-shrink-0">
-            <div className="w-32 h-32 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-xl mx-auto transform hover:scale-105 transition-transform duration-300">
-              <span className="text-slate-400 text-sm font-medium">Portrait</span>
-            </div>
-          </div>
           <div className="flex-1 text-center md:text-left space-y-4">
             <h3 className="text-xl font-bold tracking-tight text-slate-800">{t.footer.about}</h3>
             <p className="text-slate-600 leading-relaxed max-w-2xl">
